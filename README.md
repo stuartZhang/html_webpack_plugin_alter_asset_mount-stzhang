@@ -13,8 +13,8 @@
 
 1. 必须与[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)插件配套使用。
 2. 读取[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)插件的配置项。
-   1. 所以，`html_webpack_plugin_alter_asset_mount-stzhang`自身是没有任何直接输入的配置对象。
-   2. 相反，`html_webpack_plugin_alter_asset_mount-stzhang`给[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)插件添加了一个新配置项`mount`（这是一个选项对象）。
+   1. `html_webpack_plugin_alter_asset_mount-stzhang`给[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)插件添加了一个新配置项`mount`（这是一个选项对象）。
+   2. `html_webpack_plugin_alter_asset_mount-stzhang`自身的构造函数也接受包含了`mount`配置项的配置对象。但是，它的优先级更低会被`html-webpack-plugin`插件配置项对象内的`mount`复写（不是合并）。
 3. 监听[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)插件的`html-webpack-plugin-alter-asset-tags`插件事件。正是在这个事件的处理函数里：
    1. 使用给[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)插件新增的配置项`mount`。
    2. 修改`chunk`脚本文件在`html`页中的注入位置。
@@ -58,7 +58,8 @@ const AlertAssetMount = require('html_webpack_plugin_alter_asset_mount-stzhang')
 module.exports = {
     // ...
     plugins: [
-        new AlertAssetMount() // 此插件自身的构造器不需要任何的参数
+        new AlertAssetMount() // 上面配置中的 {mount: {entry1: {js, css}}} 配置对象
+                              // 出现在构造函数参数里也是可以的。但，注意优先级更低
     ]
     // ...
 };
