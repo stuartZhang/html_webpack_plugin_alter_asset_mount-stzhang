@@ -1,20 +1,27 @@
 {
     "name": "html_webpack_plugin_alter_asset_mount-stzhang",
     "version": "1.0.0",
-    "description": "调整script标签在html模板内的插入位置",
+    "description": "微调 html-webpack-plugin 插件注入 script 标签在html模板内的位置",
     "main": "libs/index.js",
     "files": [
         "libs"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/stuartZhang/html_webpack_plugin_alter_asset_mount-stzhang.git"
+    },
     "keywords": [
         "html-webpack-plugin",
-        "alter-asset-tags"
+        "alter-asset-tags",
+        "inject",
+        "script",
+        "link"
     ],
     "author": "stuart_zhang",
     "license": "MIT",
     "engines": {
-        "node": ">= 8.9.0",
-        "npm": ">= 5.0.0"
+        "node": ">= 8.9.1",
+        "npm": ">= 5.5.1"
     },
     "devDependencies": {
         "eslint": "^6.8.0",
