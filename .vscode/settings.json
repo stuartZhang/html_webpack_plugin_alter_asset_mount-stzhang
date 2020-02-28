@@ -1,0 +1,34 @@
+{
+    "debug.inlineValues": true,
+    "debug.openExplorerOnEnd": true,
+    "debug.allowBreakpointsEverywhere": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.tabSize": 4,
+    "editor.snippetSuggestions": "top",
+    "editor.tabCompletion": "on",
+    "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
+    "editor.wordWrap": "on",
+    "editor.detectIndentation": false,
+    "eslint.enable": true,
+    "explorer.autoReveal": true,
+    "files.defaultLanguage": "javascript",
+    "files.eol": "\n",
+    "files.exclude": {
+        "node_modules/.bin": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "gitlens.currentLine.enabled": false,
+    "git.ignoreLimitWarning": true,
+    "html.validate.scripts": false,
+    "javascript.validate.enable": false,
+    "prettier.singleQuote": true, // 强制单引号
+    "prettier.trailingComma": "all", // 尽可能控制尾随逗号的打印
+    "projectManager.groupList": true,
+    "projectManager.sortList": "Recent",
+    "projectManager.openInNewWindowWhenClickingInStatusBar": true,
+    "workbench.editor.closeOnFileDelete": false,
+    "workbench.editor.revealIfOpen": true,
+    "vsicons.presets.angular": false
+}
