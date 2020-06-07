@@ -6,7 +6,20 @@ module.exports = class HtmlWebpackAlterAssetPlugin{
     apply(compiler){
         const hookCallback = compilation => {
             if (compilation.hooks) { // webpack 4
-                compilation.hooks.htmlWebpackPluginAlterAssetTags.tap(pkg.name, htmlPluginData => this.handle(htmlPluginData));
+                if (typeof compilation.hooks.htmlWebpackPluginAlterAssetTags === 'object') {
+                    compilation.hooks.htmlWebpackPluginAlterAssetTags.tap(pkg.name, htmlPluginData => this.handle(htmlPluginData));
+                } else {
+                    const HtmlWebpackPlugin = require('html-webpack-plugin');
+                    HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tap(pkg.name, ({headTags, bodyTags, ...rest}) => {
+                        const {chunks} = compilation.getStats().toJson({chunks: true});
+                        this.handle({
+                            head: headTags,
+                            body: bodyTags,
+                            chunks,
+                            ...rest
+                        });
+                    });
+                }
             } else { // webpack 3
                 compilation.plugin('html-webpack-plugin-alter-asset-tags', (htmlPluginData, callback) => {
                     this.handle(htmlPluginData);
