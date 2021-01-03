@@ -36,18 +36,22 @@ new HtmlWebpackPlugin({
     filename: 'index.html',
     template: 'tmpl/index.html',
     inject: true,
-    chunks: ['entry1', 'entry2'],
+    chunks: ['chunkId1', 'chunkId2'],
     mount: { // 新配置项在这里。
-        entry1: { // chunk 名 或者 chunk id
+        chunkId1: { // chunk 名 或者 chunk id
             js: 'body' | 'head',  // 指定此 chunk 的脚本文件放在哪
             css: 'body' | 'head'  // 指定此 chunk 的样式文件放在哪
         }
-        // 注意：entry2 没有出现在 mount 配置里。所以，`inject: true`
+        // 注意：chunkId2 没有出现在 mount 配置里。所以，`inject: true`
         // 让把它的程序文件放在哪，就放在那。和`HtmlWebpackPlugin`插件
         // 的原有行为保持一致。
     }
 })
 ```
+
+#### `chunkId`的数据格式
+
+**在`HtmlWebpackPlugin v4+`中，**其的格式是`{Chunk Id hint}~{Entry Point 1}~{Entry Point 2}~...`
 
 ## 安装
 
@@ -58,7 +62,7 @@ const AlertAssetMount = require('html_webpack_plugin_alter_asset_mount-stzhang')
 module.exports = {
     // ...
     plugins: [
-        new AlertAssetMount() // 上面配置中的 {mount: {entry1: {js, css}}} 配置对象
+        new AlertAssetMount() // 上面配置中的 {mount: {chunkId1: {js, css}}} 配置对象
                               // 出现在构造函数参数里也是可以的。但，注意优先级更低
     ]
     // ...

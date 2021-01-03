@@ -42,7 +42,12 @@ module.exports = class HtmlWebpackAlterAssetPlugin{
         if (typeof mount === 'object') {
             for (const chunkName of Object.keys(mount)) {
                 const {js, css} = mount[chunkName];
-                const chunk = chunks.find(({id, names}) => id === chunkName || ~names.indexOf(chunkName));
+                const chunk = chunks.find(({id, names, idHints, runtime}) => {
+                    if (plugin.version >= 4) {
+                        return idHints.map(id => `${id}~${runtime.join('~')}`).some(id => id === chunkName);
+                    }
+                    return id === chunkName || ~names.indexOf(chunkName);
+                });
                 if (chunk) {
                     let index;
                     if (js === 'head') {
