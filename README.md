@@ -51,7 +51,7 @@ new HtmlWebpackPlugin({
 
 #### `chunkId`的数据格式
 
-**在`HtmlWebpackPlugin v4+`中，**其的格式是`{Chunk Id hint}~{Entry Point 1}~{Entry Point 2}~...`
+**在`HtmlWebpackPlugin v3+`中，**其的格式是`{Chunk Id hint}~{Entry Point 1}~{Entry Point 2}~...`
 
 ## 安装
 
