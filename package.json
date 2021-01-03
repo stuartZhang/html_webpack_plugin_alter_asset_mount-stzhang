@@ -26,5 +26,8 @@
     "devDependencies": {
         "eslint": "^6.8.0",
         "eslint-config-minxing": "^1.1.37"
+    },
+    "peerDependencies": {
+        "html-webpack-plugin": "^4.5.0"
     }
 }
