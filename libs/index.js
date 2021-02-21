@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('safe-require')('html-webpack-plugin');
 const pkg = require('../package.json');
 module.exports = class HtmlWebpackAlterAssetPlugin{
     constructor(options){
@@ -9,7 +10,6 @@ module.exports = class HtmlWebpackAlterAssetPlugin{
                 if (typeof compilation.hooks.htmlWebpackPluginAlterAssetTags === 'object') {
                     compilation.hooks.htmlWebpackPluginAlterAssetTags.tap(pkg.name, htmlPluginData => this.handle(htmlPluginData));
                 } else {
-                    const HtmlWebpackPlugin = require('html-webpack-plugin');
                     HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tap(pkg.name, ({headTags, bodyTags, ...rest}) => {
                         const {chunks} = compilation.getStats().toJson({chunks: true});
                         this.handle({
@@ -28,7 +28,7 @@ module.exports = class HtmlWebpackAlterAssetPlugin{
             }
         };
         if (compiler.hooks) { // webpack 4
-            compiler.hooks.afterCompile.tap(pkg.name, hookCallback);
+            compiler.hooks.compilation.tap(pkg.name, hookCallback);
         } else { // webpack 3
             compiler.plugin('afterCompile', hookCallback);
         }
@@ -49,30 +49,40 @@ module.exports = class HtmlWebpackAlterAssetPlugin{
                     return id === chunkName || ~names.indexOf(chunkName);
                 });
                 if (chunk) {
+                    const searchJs = ({attributes: {src}}) => src && chunk.files.some(file => src.endsWith(file));
+                    const searchCss = ({attributes: {href}}) => href && chunk.files.some(file => href.endsWith(file));
                     let index;
                     if (js === 'head') {
-                        while ((index = body.findIndex(({attributes: {src}}) => src && chunk.files.some(file => src.endsWith(file)))) > -1) {
+                        while ((index = body.findIndex(searchJs)) > -1) { // <body> 里有。
                             const [move] = body.splice(index, 1);
                             head.push(move);
+                        } // <body> 里没有，<script> 就已经在 <head> 里了。
+                        const move = head.find(searchJs);
+                        if (move) {
+                            move.attributes.defer = false; // 立即下载与执行外部脚本。
                         }
                     } else if (js === 'body') {
-                        while ((index = head.findIndex(({attributes: {src}}) => src && chunk.files.some(file => src.endsWith(file)))) > -1) {
+                        while ((index = head.findIndex(searchJs)) > -1) { // <head> 里有。
                             const [move] = head.splice(index, 1);
                             body.push(move);
+                        } // <head> 里没有，<script> 就已经在 <body> 里了。
+                        const move = body.find(searchJs);
+                        if (move) {
+                            move.attributes.defer = false; // 立即下载与执行外部脚本。
                         }
                     } else if (js != null) {
                         console.info('\n', pkg.name, '无效的 js 挂载点:', js);
                     }
                     if (css === 'head') {
-                        while ((index = body.findIndex(({attributes: {href}}) => href && chunk.files.some(file => href.endsWith(file)))) > -1) {
+                        while ((index = body.findIndex(searchCss)) > -1) { // <body> 里有。
                             const [move] = body.splice(index, 1);
                             head.push(move);
-                        }
+                        } // <body> 里没有，<link> 就已经在 <head> 里了。
                     } else if (css === 'body') {
-                        while ((index = head.findIndex(({attributes: {href}}) => href && chunk.files.some(file => href.endsWith(file)))) > -1) {
+                        while ((index = head.findIndex(searchCss)) > -1) { // <head> 里有。
                             const [move] = head.splice(index, 1);
                             body.push(move);
-                        }
+                        } // <head> 里没有，<link> 就已经在 <body> 里了。
                     } else if (css != null) {
                         console.info('\n', pkg.name, '无效的 css 挂载点:', css);
                     }

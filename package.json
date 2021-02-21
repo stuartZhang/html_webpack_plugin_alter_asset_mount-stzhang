@@ -1,6 +1,6 @@
 {
     "name": "html_webpack_plugin_alter_asset_mount-stzhang",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "微调 html-webpack-plugin 插件注入 script 标签在html模板内的位置",
     "main": "libs/index.js",
     "files": [
@@ -29,5 +29,8 @@
     },
     "peerDependencies": {
         "html-webpack-plugin": "^4.5.0"
+    },
+    "dependencies": {
+        "safe-require": "^1.0.4"
     }
 }
