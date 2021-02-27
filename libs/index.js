@@ -28,7 +28,11 @@ module.exports = class HtmlWebpackAlterAssetPlugin{
             }
         };
         if (compiler.hooks) { // webpack 4
-            compiler.hooks.compilation.tap(pkg.name, hookCallback);
+            if (HtmlWebpackPlugin && HtmlWebpackPlugin.version >= 4) {
+                compiler.hooks.compilation.tap(pkg.name, hookCallback);
+            } else {
+                compiler.hooks.afterCompile.tap(pkg.name, hookCallback);
+            }
         } else { // webpack 3
             compiler.plugin('afterCompile', hookCallback);
         }
