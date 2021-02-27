@@ -1,4 +1,6 @@
 {
+    "http.proxy": "http://127.0.0.1:7890",
+    "http.proxyStrictSSL": false,
     "debug.inlineValues": true,
     "debug.openExplorerOnEnd": true,
     "debug.allowBreakpointsEverywhere": false,
@@ -11,7 +13,6 @@
     "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
     "editor.wordWrap": "on",
     "editor.detectIndentation": false,
-    "eslint.enable": true,
     "explorer.autoReveal": true,
     "files.defaultLanguage": "javascript",
     "files.eol": "\n",
